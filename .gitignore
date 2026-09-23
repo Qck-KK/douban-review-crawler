@@ -1,0 +1,12 @@
+# 爬取的数据含豆瓣用户信息，不上传
+data/
+*.csv
+*.jsonl
+*.xlsx
+users_done.txt
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
