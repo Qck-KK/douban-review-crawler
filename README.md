@@ -8,7 +8,7 @@ This project originated from the data collection part of my undergraduate thesis
 
 * **Complete data collection pipeline**: collect users from a seed movie's review section → crawl each user's movie reviews and ratings with automatic pagination → fetch the corresponding movie titles and genres
 
-* **Request control and block detection**: randomized delays between requests, automatic exponential backoff for 429/5xx responses, and safe termination when access is blocked
+* **Request control and block detection**: randomized delays between requests, automatic exponential backoff for 429/5xx responses, and safe termination when browser verification or access blocks are detected
 
 * **Checkpoint/resume**: data is written incrementally to disk by user; when the crawler is restarted, completed users are skipped
 
@@ -144,7 +144,7 @@ tests/
 
 ## Limitations
 
-* **Login and browser verification**: Douban's browser verification may require a logged-in Cookie for automated requests. Frequent requests may also result in access restrictions. The default delay is 2–5 seconds; it is recommended to keep the default delay and limit the size of individual crawling jobs.
+* **Login and browser verification**: Douban may trigger browser verification or restrict automated requests. A logged-in Cookie may be required in some access scenarios. The crawler therefore uses randomized delays, retries with exponential backoff, and stops when a verification page or access block is detected. The default request delay is 2–5 seconds, but this should **not** be considered a guaranteed safe rate. In practice, the appropriate crawling frequency may vary depending on the current access conditions. For larger crawling jobs, use a more conservative request rate and limit the size of individual runs.
 
 * **Sparse data**: the crawler only collects ratings for movies that users have written reviews for, rather than all movies they have watched or rated. In my undergraduate thesis, this approach produced 1,909 ratings from 208 users across 1,283 movies, with a rating-matrix sparsity of 99.28%.
 
